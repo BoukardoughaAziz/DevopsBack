@@ -10,27 +10,64 @@ services:
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=root
     restart: unless-stopped
-
     image: azizbk/devops
     depends_on:
       - dbmysql
-
-  dbmysql:
-    image: "mysql:5.6"
-    container_name: dbmysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-    ports:
-      - "3306:3306"
-    restart: unless-stopped
-    volumes:
-      - db:/var/lib/mysql
+#  # jenkins
+#  jenkins:
+#    container_name: deployment_jenkins
+#    image: denitiawan/jenkins-with-docker:1.0
+#    environment:
 #
-#  angular-app:
-#    image: azizbenismail/kaddemangular:latest  # Spécifiez le nom de votre image et la version (dans cet exemple, "latest")
+#      APP_PORT: 12345
+#      APP_DB_HOST: deployment_mysql
+#      APP_DB_PORT: 3366
+#      APP_DB_NAME: db_spring
+#      APP_DB_USER: user
+#      APP_DB_PASSWORD: password
+#
+#
 #    ports:
-#      - "4200:80"  # Assurez-vous que les ports correspondent à ceux que vous utilisez dans votre application
-#    restart: always  # Optionnel : redémarrer toujours le conteneur en cas d'échec
+#      - '9999:8080'
+#    expose:
+#      - '9999'
+#    volumes:
+#      - jenkins:/var/jenkins_home
+#      - /var/run/docker.sock:/var/run/docker.sock
 #
-#volumes:
-#  db:
+#    networks:
+#      - network
+#
+
+
+  # mysql database for springboot app
+  dbmysql:
+    container_name: 'dbmysql'
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: 'devops'
+      MYSQL_USER:
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_TCP_PORT: 3306
+    ports:
+      - 3306:3306
+    expose:
+      - '3366'
+    volumes:
+      - ./db_mysql:/docker-entrypoint-initdb.d/
+      - db_mysql:/var/lib/mysql
+    networks:
+      - network
+
+
+
+
+
+networks:
+  network:
+    driver: bridge
+
+volumes:
+  db_mysql:
+  jenkins:
