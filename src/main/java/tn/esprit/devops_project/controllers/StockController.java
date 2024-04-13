@@ -20,12 +20,12 @@ public class StockController {
     }
 
     @GetMapping("/stock/{id}")
-    Stock retrieveStock(@PathVariable Long id){
+    public Stock retrieveStock(@PathVariable Long id){
         return stockService.retrieveStock(id);
     }
 
     @GetMapping("/stock")
-    List<Stock> retrieveAllStock(){
+    public List<Stock> retrieveAllStock(){
         return stockService.retrieveAllStock();
     }
 
