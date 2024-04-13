@@ -110,7 +110,8 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>        </plugins>
+            </plugin>
+        </plugins>
     </build>
     <distributionManagement>
         <repository>
